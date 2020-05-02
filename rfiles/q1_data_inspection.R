@@ -1,12 +1,23 @@
 dim(dados_covid)
 summary(dados_covid)
 
+dados_covid$sexo <- 0
+dados_covid[dados_covid$gender == "female", "sexo"] <- 1
+dados_covid$gender <- NULL
+#dados_covid$sexo <- as.factor(dados_covid$sexo)
+
+
+dados_covid$country <- NULL
+
 dados_covid$estado <- 0
 dados_covid[dados_covid$label == "onTreatment", "estado"] <- 1
 dados_covid[dados_covid$label == "recovered", "estado"] <- 2
 
 dados_covid$label <- NULL
 dados_covid$estado <- as.factor(dados_covid$estado)
+
+
+
 
 # Treino-Validação 80% / Validação 20%
 random_Indexes <- sample(1:nrow(dados_covid), size=0.8*nrow(dados_covid))
@@ -15,9 +26,11 @@ covid_Val  <- dados_covid[-random_Indexes, ]
 
 #------------------------------------------------#
 # Questao 1 - Inspecione os dados.               #
-# Quantos exemplos você tem?                     #
-# Qual o intervalo de valores de cada feature?   #
 #------------------------------------------------#
+# Quantos exemplos de cada classe
+# dead = 56
+# 0nTreatment = 1065
+# recorvered = 138
 dim(covid_treino)
 summary(covid_treino)
 
@@ -25,7 +38,7 @@ dim(covid_Val)
 summary(covid_Val)
 
 # Identificando a coluna que contém o target:
-target_col = 16
+target_col = 15
 
 ############ Inspecionando os dados ############
 head(covid_treino)
@@ -66,6 +79,7 @@ selectedIndex <- sample(1:nrow(recoverData_t), adjust_prop/2*nrow(recoverData_t)
 oversampledRecData <- recoverData_t[selectedIndex,]
 dim(oversampledRecData)
 
+head(covid_treino)
 covid_treino <- rbind(covid_treino,oversampledRecData)
 dim(covid_treino)
 
@@ -91,6 +105,7 @@ covid_Val[, -target_col] <- sweep(covid_Val[, -target_col], 2, minMaxDifTreino, 
 
 summary(covid_treino)
 summary(covid_Val)
+
 
 
 
