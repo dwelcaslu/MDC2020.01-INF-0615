@@ -12,6 +12,7 @@ split_data <- function(data, split_prop){
   return(list(data_1, data_2))
 }
 
+
 encode_features <- function(data){
   
   # Country-idh-encoding:
@@ -43,10 +44,6 @@ encode_features <- function(data){
   return(data)
 }
 
-# encode_label <- function(data){
-#   
-#   return(data)
-# }
 
 data_normalization <- function(data, min_val, max_val, target_col){
   
