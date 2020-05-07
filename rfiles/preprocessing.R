@@ -13,6 +13,13 @@ split_data <- function(data, split_prop){
 }
 
 
+rebalance_data <- function(data, k_mult){
+  selectedIndex <- sample(1:nrow(data), k_mult*nrow(data), replace=TRUE)
+  oversampled_data <- data[selectedIndex,]
+  return(oversampled_data)
+}
+
+
 encode_features <- function(data){
   
   # Country-idh-encoding:

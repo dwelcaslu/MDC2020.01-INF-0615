@@ -28,16 +28,6 @@ prune_tree <- function(model){
   return(pruned_model)
 }
 
-evaluate_baseline <- function(baseline, base_pruned, data){
-  #Let's see how we do in the data non-prunned tree:
-  treeEval <- predictAndEvaluate(baseline, data)
-  print(paste('Norm. ACC Non-pruned tree:', mean(treeEval$STATS[,'Sensitivity'])))
-  treeEval$CM
-  #prunned tree
-  ptreeEval <- predictAndEvaluate(base_pruned, data)
-  print(paste('Norm. ACC Pruned tree:', mean(ptreeEval$STATS[,'Sensitivity'])))
-  ptreeEval$CM
-}
 
 summarize_tree <- function(tree_model){
   

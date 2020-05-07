@@ -14,6 +14,8 @@ train_tree_model <- function(trainData, maxdepth){
 train_tree_models_bydepth <- function(max_depth, trainData, validData){
   errorPerDepth <- data.frame(depth=numeric(max_depth), error_train=numeric(max_depth),
                               error_valid=numeric(max_depth))
+  tree_opt <- NULL
+  acc_init <- 0
   for (depth in 1:max_depth){
     treeModel <- train_tree_model(trainData, depth)
     
@@ -22,6 +24,11 @@ train_tree_models_bydepth <- function(max_depth, trainData, validData){
     
     errorPerDepth[depth,] = c(depth, 1 - mean(trainResults$STATS[,'Sensitivity']),
                               1 - mean(valResults$STATS[,'Sensitivity']))
+  
+    if (mean(valResults$STATS[,'Sensitivity']) > acc_init){
+      acc_init <- mean(valResults$STATS[,'Sensitivity'])
+      tree_opt <- treeModel
+    }
   }
-  return(errorPerDepth)
+  return(list(errors=errorPerDepth, tree_opt=tree_opt))
 }

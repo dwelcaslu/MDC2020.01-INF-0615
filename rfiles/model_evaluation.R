@@ -22,17 +22,20 @@ predictAndEvaluate <- function(model, data, isDecisionTree = TRUE){
 }
 
 
-# calculate_errors <- function(cm_matrix){
-#   hits <- 0 
-#   for (i in 1:nrow(cm_matrix)){
-#     hits <- hits + cm_matrix[i,i]
-#   }
-#   error <- (sum(cm_matrix) - hits)/sum(cm_matrix)
-#   return(error)
-# }
+evaluate_model <- function(model, data, isDecisionTree = TRUE){
+  #Let's see how we do in the data tree:
+  treeEval <- predictAndEvaluate(model, data, isDecisionTree=isDecisionTree)
+  print(paste('Norm. ACC:', mean(treeEval$STATS[,'Sensitivity'])))
+  print(paste('Error:', 1 - mean(treeEval$STATS[,'Sensitivity'])))
+}
 
 
-plot_train_valid_error <- function(errorPerDepth){
+plot_train_valid_error_trees <- function(errorPerDepth){
   errorPerDepth <- melt(errorPerDepth, id="depth")  # convert to long format
   ggplot(data=errorPerDepth, aes(x=depth, y=value, colour=variable)) + geom_line()
+}
+
+plot_train_valid_error_rfs <- function(errorPerDepth){
+  errorPerDepth <- melt(errorPerDepth, id="ntree")  # convert to long format
+  ggplot(data=errorPerDepth, aes(x=ntree, y=value, colour=variable)) + geom_line()
 }
