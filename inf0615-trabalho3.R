@@ -36,7 +36,7 @@ source("./rfiles/q6_metrics_analysis.R")
 #__________________ 1 - Get Data __________________#
 # Loadinng the data from .csv file:
 data <- read.csv("COVID19_training_validation_set_cleaned.csv", sep=',', header=TRUE)
-data_test <- read.csv("COVID19_training_validation_set_cleaned.csv", sep=',', header=TRUE)
+data_test <- read.csv("COVID19_test_set_cleaned.csv", sep=',', header=TRUE)
 
 # Defining some important variables:
 target_col <- ncol(data)
@@ -109,7 +109,7 @@ evaluate_model(sub_models$m2, data_valid)
 evaluate_model(sub_models$m2, data_test)
 
 # Questao 5 - Treine várias florestas aleatórias variando o número de árvores.
-max_ntrees <- 30
+max_ntrees <- 50
 response <- train_random_forests(max_ntrees, data_train, data_valid)
 error_ntree <- response$errors
 rf_opt <- response$rf_opt

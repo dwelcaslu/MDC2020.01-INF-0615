@@ -18,15 +18,15 @@ predictAndEvaluate <- function(model, data, isDecisionTree = TRUE){
   }
   cm <- confusionMatrix(data = as.factor(y_pred), 
                         reference = as.factor(data$label))
-  return(list(CM=cm$table, STATS=cm$byClass, ACC=cm$overall["Accuracy"]))
+  return(list(CM=cm$table, STATS=cm$byClass, ACC_norm=mean(cm$byClass[, 'Sensitivity'])))
 }
 
 
 evaluate_model <- function(model, data, isDecisionTree = TRUE){
   #Let's see how we do in the data tree:
   treeEval <- predictAndEvaluate(model, data, isDecisionTree=isDecisionTree)
-  print(paste('Norm. ACC:', mean(treeEval$STATS[,'Sensitivity'])))
-  print(paste('Error:', 1 - mean(treeEval$STATS[,'Sensitivity'])))
+  print(paste('Norm. ACC:', treeEval$ACC_norm))
+  print(paste('Error:', 1 - treeEval$ACC_norm))
 }
 
 

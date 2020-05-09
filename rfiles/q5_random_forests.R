@@ -2,7 +2,8 @@ library(randomForest)
 
 train_rf_model <- function(trainData, ntree){
   #Train RF model
-  mtry <- sqrt(dim(trainData)[2])
+  # mtry <- sqrt(dim(trainData)[2])
+  mtry <- 12
   rfModel <- randomForest(formula=label ~ case_in_country + reporting.date + age + symptom_onset +
                             + If_onset_approximated + hosp_visit_date + international_traveler + domestic_traveler +
                             + exposure_start + exposure_end + traveler + visiting.Wuhan +
@@ -22,11 +23,10 @@ train_random_forests <- function(max_ntrees, trainData, validData){
     trainResults <- predictAndEvaluate(rfModel, trainData, isDecisionTree=FALSE)
     valResults <- predictAndEvaluate(rfModel, validData, isDecisionTree=FALSE)
     
-    error_ntree[ntree,] = c(ntree, 1 - mean(trainResults$STATS[,'Sensitivity']),
-                              1 - mean(valResults$STATS[,'Sensitivity']))
+    error_ntree[ntree,] = c(ntree, 1 - trainResults$ACC_norm, 1 - valResults$ACC_norm)
     
-    if (mean(valResults$STATS[,'Sensitivity']) > acc_init){
-      acc_init <- mean(valResults$STATS[,'Sensitivity'])
+    if (valResults$ACC_norm > acc_init){
+      acc_init <- valResults$ACC_norm
       rf_opt <- rfModel
     }
   }

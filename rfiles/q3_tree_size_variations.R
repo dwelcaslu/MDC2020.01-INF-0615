@@ -22,11 +22,10 @@ train_tree_models_bydepth <- function(max_depth, trainData, validData){
     trainResults <- predictAndEvaluate(treeModel, trainData)
     valResults <- predictAndEvaluate(treeModel, validData)
     
-    errorPerDepth[depth,] = c(depth, 1 - mean(trainResults$STATS[,'Sensitivity']),
-                              1 - mean(valResults$STATS[,'Sensitivity']))
+    errorPerDepth[depth,] = c(depth, 1 - trainResults$ACC_norm, 1 - valResults$ACC_norm)
   
-    if (mean(valResults$STATS[,'Sensitivity']) > acc_init){
-      acc_init <- mean(valResults$STATS[,'Sensitivity'])
+    if (valResults$ACC_norm > acc_init){
+      acc_init <- valResults$ACC_norm
       tree_opt <- treeModel
     }
   }
