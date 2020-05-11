@@ -7,7 +7,6 @@ predictAndEvaluate <- function(model, data, isDecisionTree = TRUE){
   prediction <- predict(model, data)
   if (isDecisionTree){
     y_pred <- rep('', nrow(prediction))
-  
     columns <- colnames(prediction)
     for (i in 1:nrow(data)){
       y_pred[i] = columns[prediction[i , ] == max(prediction[i , ])]
